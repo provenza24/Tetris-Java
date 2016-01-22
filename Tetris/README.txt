@@ -3,7 +3,7 @@ _________________
   PRESENTATION
 _________________
 
-Le jeu Tetris classique a sa sortie sur GameBoy.
+Le jeu Tetris classique à sa sortie sur GameBoy.
 Il propose uniquement une partie de tetris au level 9.
 Les scores sont respéctés ainsi que l'enchainement des Levels
 et du temps de chute des pièces.
@@ -43,3 +43,6 @@ _________________
 		- ajouter les sons du jeu (musiques ok)
 	fix :
 		- affichage correct lorsqu'on supprime une ligne
+		
+-	22/01/2016
+	Projet Tetris ajouté à GitHub
