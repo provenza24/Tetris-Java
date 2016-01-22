@@ -45,4 +45,5 @@ _________________
 		- affichage correct lorsqu'on supprime une ligne
 		
 -	22/01/2016
+	Regénération du jar avec la jdk 1.7
 	Projet Tetris ajouté à GitHub
