@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<project name="DivxManager" default="all" basedir=".">
+
+	<description>
+	    Génération de l'application
+	  </description>
+
+	<property name="generation.dir" value="./" />
+	<property name="classes.dir" value="${generation.dir}/build" />
+	<property name="jar.dir" value="${generation.dir}/jar" />
+	<property name="classes.tools" value="${generation.dir}/tools" />
+	<property name="classes.filter" value="**/*.class" />
+	<property name="user.name" value="PROVENZANO" />
+	<property name="innoSetup.dir" value="C:\Program Files\Inno Setup 5\ISCC.exe" />
+	<property name="version.num" value="1.0" />
+	<property name="src" location="../src" />
+	<property name="lib" location="../lib" />
+	<property name="resources" location="../resources" />
+
+	<target name="init" description="Initialisation">
+		<tstamp />
+		<buildnumber file="numerobuild.txt" />
+		<echo>+---------------------------------------------------+</echo>
+		<echo>|                                                   |</echo>
+		<echo>|     G E N E R A T I N G   T E T R I S  J A R      |</echo>
+		<echo>|                                                   |</echo>
+		<echo>+---------------------------------------------------+</echo>
+		<echo message="Implementation-Version : ${version.num}-b${build.number}" />
+		<echo message="In date of ${TODAY}" />
+	</target>
+
+	<target name="all" depends="init, cleanBefore, compil, copy, jar, cleanAfter" description="Generation complete">
+		<echo message="Generation complete." />
+	</target>
+
+	<target name="compil" depends="init" description="Compilation">
+		<echo>+------------ COMPILING SOURCES -------------------+</echo>
+		<javac srcdir="${src}" destdir="${classes.dir}">
+			<classpath>
+				<pathelement path="${java.class.path}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="copy" depends="init,compil" description="Files copy">
+		<copy todir="${jar.dir}/resources">
+			<fileset dir="${resources}" />
+		</copy>
+	</target>
+
+	<target name="jar" depends="init, compil, copy">
+		<echo>+--------------- MAKING JAR --------------------+</echo>
+		<delete file="tetris.jar" />
+		<delete file="MANIFEST.MF" />
+		<buildnumber file="numerobuild.txt" />
+		<tstamp>
+			<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+		</tstamp>
+
+		<manifest file="MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Implementation-Version" value="${version.num}-b${build.number}" />
+			<attribute name="Built-Date" value="${TODAY}" />
+			<attribute name="Main-Class" value="jeu.WindowRun" />
+			<attribute name="Class-Path" value=".\jeu\ressources\ " />
+		</manifest>
+
+		<jar destfile="${jar.dir}/tetris.jar" basedir="${classes.dir}" includes="**/*.class" manifest="MANIFEST.MF" />
+	</target>
+	
+	<target name="cleanBefore" depends="init">
+			<echo>+-------------- CLEANING BEFORE DEPLOYING -------------------+</echo>			
+			<delete includeemptydirs="true">
+				<fileset dir="${jar.dir}" includes="**/*" />
+			</delete>
+		</target>
+	
+	<target name="cleanAfter" depends="init, compil, copy, jar">
+			<echo>+-------------- CLEANING AFTER DEPLOYING -------------------+</echo>
+			<delete>
+				<fileset file="MANIFEST.MF" />
+			</delete>
+			<delete includeemptydirs="true">
+				<fileset dir="${classes.dir}" includes="**/*" />
+			</delete>
+		</target>
+
+</project>
